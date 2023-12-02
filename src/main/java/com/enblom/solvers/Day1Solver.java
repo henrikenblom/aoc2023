@@ -1,5 +1,7 @@
 package com.enblom.solvers;
 
+import static com.enblom.Utils.extractDigits;
+
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -12,7 +14,7 @@ public final class Day1Solver extends Solver<Integer> {
         .map(line -> !firstPuzzle ? resolveSpelledOutDigits(line) : line)
         .forEach(
             line -> {
-              String numerals = line.replaceAll("\\D", "");
+              String numerals = extractDigits(line);
               if (!numerals.isEmpty()) {
                 sum.addAndGet(
                     Integer.parseInt(
