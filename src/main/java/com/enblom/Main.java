@@ -1,38 +1,42 @@
 package com.enblom;
 
-import static com.enblom.Utils.grabIntegers;
+import static com.enblom.Utils.getResourceContent;
 
-import com.enblom.solvers.Day1Solver;
-import com.enblom.solvers.Day2Solver;
-import com.enblom.solvers.Day3Solver;
 import com.enblom.solvers.Solver;
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Main {
 
-  public static void main(String[] args) throws URISyntaxException, IOException {
-    runAndOutput(new Day1Solver());
-    runAndOutput(new Day2Solver());
-    runAndOutput(new Day3Solver());
+  public static void main(String[] args) {
+    findSolverClassNames().stream().map(Utils::grabIntegers).sorted().forEach(Main::runAndOutput);
   }
 
-  private static void runAndOutput(Solver<Integer> solver) throws URISyntaxException, IOException {
-    var day = extractDay(solver);
-    var resourceName = "day%s/input.txt".formatted(day);
-    System.out.println();
-    output("********* Day " + String.format("%2d", day) + " *********", true);
-    output("1st puzzle: " + solver.solveFromResource(resourceName, true), false);
-    output("2nd puzzle: " + solver.solveFromResource(resourceName, false), false);
-    output("**************************", true);
-    System.out.println();
-    System.out.println("               " + getBling());
-  }
+  @SuppressWarnings("unchecked")
+  private static void runAndOutput(int day) {
+    try {
+      var className = "com.enblom.solvers.Day%sSolver".formatted(day);
+      var resourceName = "day%s/input.txt".formatted(day);
+      var solver =
+          (Solver<Integer>)
+              Class.forName(className)
+                  .getConstructor(String.class)
+                  .newInstance(getResourceContent(resourceName));
 
-  @SuppressWarnings("rawtypes")
-  private static int extractDay(Solver solver) {
-    return grabIntegers(solver.getClass().getSimpleName());
+      System.out.println();
+      output("********* Day " + String.format("%2d", day) + " *********", true);
+      output("1st puzzle: " + solver.solveFirstPuzzle(), false);
+      output("2nd puzzle: " + solver.solveSecondPuzzle(), false);
+      output("**************************", true);
+      System.out.println();
+      System.out.println("               " + getBling());
+    } catch (Exception ex) {
+      throw new RuntimeException(ex);
+    }
   }
 
   private static void output(String line, boolean divider) {
@@ -55,5 +59,16 @@ public class Main {
       case 8 -> "🕯️";
       default -> "  ";
     };
+  }
+
+  public static Set<String> findSolverClassNames() {
+    InputStream stream =
+        ClassLoader.getSystemClassLoader().getResourceAsStream("com/enblom/solvers");
+    assert stream != null;
+    BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+    return reader
+        .lines()
+        .filter(line -> line.endsWith("Solver.class") && line.startsWith("Day"))
+        .collect(Collectors.toSet());
   }
 }

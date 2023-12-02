@@ -6,12 +6,24 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class Day1Solver extends Solver<Integer> {
+
+  public Day1Solver(String input) {
+    super(input);
+  }
+
   @Override
-  Integer solve(String input, boolean firstPuzzle) {
+  public Integer solveFirstPuzzle() {
+    return decipher(input);
+  }
+
+  @Override
+  public Integer solveSecondPuzzle() {
+    return decipher(resolveSpelledOutDigits(input));
+  }
+
+  private int decipher(String text) {
     AtomicInteger sum = new AtomicInteger(0);
-    input
-        .lines()
-        .map(line -> !firstPuzzle ? resolveSpelledOutDigits(line) : line)
+    text.lines()
         .forEach(
             line -> {
               String numerals = extractDigits(line);

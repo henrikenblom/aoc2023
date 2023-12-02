@@ -7,13 +7,6 @@ import org.junit.jupiter.api.Test;
 
 class Day2SolverTest {
 
-  Day2Solver classUnderTest;
-
-  @BeforeEach
-  void setUp() {
-    classUnderTest = new Day2Solver();
-  }
-
   @Test
   void solveFirst() {
     String testInput =
@@ -24,7 +17,9 @@ class Day2SolverTest {
         Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
         Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
         """;
-    assertEquals(8, classUnderTest.solve(testInput, true));
+    var classUnderTest = new Day2Solver(testInput);
+
+    assertEquals(8, classUnderTest.solveFirstPuzzle());
   }
 
   @Test
@@ -37,6 +32,8 @@ class Day2SolverTest {
         Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
         Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
         """;
-    assertEquals(2286, classUnderTest.solve(testInput, false));
+    var classUnderTest = new Day2Solver(testInput);
+
+    assertEquals(2286, classUnderTest.solveSecondPuzzle());
   }
 }

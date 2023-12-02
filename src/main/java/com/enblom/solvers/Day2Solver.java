@@ -11,14 +11,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Day2Solver extends Solver<Integer> {
 
+  public Day2Solver(String input) {
+    super(input);
+  }
+
   @Override
-  Integer solve(String input, boolean firstPuzzle) {
-    final List<Game> gameList = parseToGameList(input);
-    if (firstPuzzle) {
-      return gameList.stream().filter(Game::isPossible).mapToInt(Game::getId).sum();
-    } else {
-      return gameList.stream().mapToInt(Game::getPowerOfMinimumSet).sum();
-    }
+  public Integer solveFirstPuzzle() {
+    return parseToGameList(input).stream().filter(Game::isPossible).mapToInt(Game::getId).sum();
+  }
+
+  @Override
+  public Integer solveSecondPuzzle() {
+    return parseToGameList(input).stream().mapToInt(Game::getPowerOfMinimumSet).sum();
   }
 
   private List<Game> parseToGameList(String input) {

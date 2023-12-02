@@ -2,23 +2,17 @@ package com.enblom.solvers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class Day3SolverTest {
-  Day3Solver classUnderTest;
-
-  @BeforeEach
-  void setUp() {
-    classUnderTest = new Day3Solver();
-  }
-
   @Test
   void solveFirst() {
     String testInput = """
 
         """;
-    assertEquals(0, classUnderTest.solve(testInput, true));
+    var classUnderTest = new Day3Solver(testInput);
+
+    assertEquals(0, classUnderTest.solveFirstPuzzle());
   }
 
   @Test
@@ -26,6 +20,8 @@ class Day3SolverTest {
     String testInput = """
 
         """;
-    assertEquals(0, classUnderTest.solve(testInput, false));
+    var classUnderTest = new Day3Solver(testInput);
+
+    assertEquals(0, classUnderTest.solveSecondPuzzle());
   }
 }

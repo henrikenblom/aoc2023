@@ -1,22 +1,13 @@
 package com.enblom.solvers;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Objects;
-
 public abstract class Solver<T> {
+  final String input;
 
-  public T solveFromResource(String resource, boolean firstPuzzle)
-      throws URISyntaxException, IOException {
-    return solve(
-        Files.readString(
-            Paths.get(
-                Objects.requireNonNull(Solver.class.getClassLoader().getResource(resource))
-                    .toURI())),
-        firstPuzzle);
+  public Solver(String input) {
+    this.input = input;
   }
 
-  abstract T solve(String input, boolean firstPuzzle);
+  public abstract T solveFirstPuzzle();
+
+  public abstract T solveSecondPuzzle();
 }
