@@ -55,7 +55,7 @@ CharMatrix{
 
   @Test
   void width() {
-    assertEquals(11, charMatrix.width());
+    assertEquals(10, charMatrix.width());
   }
 
   @Test
@@ -83,8 +83,10 @@ CharMatrix{
   }
 
   @Test
-  void findAllNumbersWithinClip() {
-    final var allNumbersWithinClip = charMatrix.findAllNumbersWithinClip(2, 0, 3, 3);
+  void findAllNumbersWithinBox() {
+    var allNumbersWithinClip = charMatrix.findAllNumbersWithinBox(2, 0, 3, 3);
+    //allNumbersWithinClip.forEach(System.out::println);
+    allNumbersWithinClip = charMatrix.findAllNumbersWithinBox(8, 0, 5, 3);
     allNumbersWithinClip.forEach(System.out::println);
   }
 

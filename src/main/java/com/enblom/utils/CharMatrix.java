@@ -29,7 +29,7 @@ public class CharMatrix {
     return new CharMatrix(
         input
             .lines()
-            .map(line -> (line + ".").chars().mapToObj(c -> (char) c).collect(Collectors.toList()))
+            .map(line -> line.chars().mapToObj(c -> (char) c).collect(Collectors.toList()))
             .toList(),
         relaxed);
   }
@@ -125,14 +125,14 @@ public class CharMatrix {
   }
 
   public List<Number> findAllNumbersWithinSquare(Position position, int size) {
-    return findAllNumbersWithinClip(position, size, size);
+    return findAllNumbersWithinBox(position, size, size);
   }
 
-  public List<Number> findAllNumbersWithinClip(int x, int y, int width, int height) {
-    return findAllNumbersWithinClip(new Position(x, y), width, height);
+  public List<Number> findAllNumbersWithinBox(int x, int y, int width, int height) {
+    return findAllNumbersWithinBox(new Position(x, y), width, height);
   }
 
-  public List<Number> findAllNumbersWithinClip(Position position, int width, int height) {
+  public List<Number> findAllNumbersWithinBox(Position position, int width, int height) {
     List<Number> matchedNumbers = new ArrayList<>();
     var allNumbers = getAllNumbers();
     IntStream.range(position.y, position.y + height)
@@ -143,8 +143,8 @@ public class CharMatrix {
                         .filter(
                             number ->
                                 number.position.y == y
-                                    && (number.rightmostX() >= position.x
-                                        && number.leftmostX() <= position.x + width - 1))
+                                    && number.rightmostX() >= position.x
+                                    && number.leftmostX() <= position.x + width - 1)
                         .toList()));
     return matchedNumbers;
   }
@@ -167,12 +167,7 @@ public class CharMatrix {
   }
 
   public Optional<Number> getNumberAtPosition(Position position) {
-    return getAllNumbers().stream()
-        .filter(
-            number ->
-                number.position.y == position.y
-                    && (number.rightmostX() >= position.x && number.leftmostX() <= position.x))
-        .findFirst();
+    return findAllNumbersWithinSquare(position, 1).stream().findFirst();
   }
 
   @Override
@@ -235,6 +230,22 @@ public class CharMatrix {
 
     public int rightmostX() {
       return position.x + length - 1;
+    }
+
+    @Override
+    public String toString() {
+      return "Number{"
+          + "position="
+          + position
+          + ", leftmostX="
+          + leftmostX()
+          + ", rightmostX="
+          + rightmostX()
+          + ", length="
+          + length
+          + ", value="
+          + value
+          + '}';
     }
   }
 }
