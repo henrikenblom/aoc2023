@@ -2,9 +2,7 @@ package com.enblom.utils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.enblom.utils.CharMatrix.Number;
 import com.enblom.utils.CharMatrix.Position;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -80,7 +78,7 @@ CharMatrix{
 
   @Test
   void findAllNumbers() {
-    final var allNumbers = charMatrix.findAllNumbers();
+    final var allNumbers = charMatrix.getAllNumbers();
     allNumbers.forEach(System.out::println);
   }
 
@@ -92,7 +90,13 @@ CharMatrix{
 
   @Test
   void findAllNumbersAroundPosition() {
-    final var allNumbersAroundPosition = charMatrix.findAllNumbersAroundPosition(3, 1, 1);
+    final var allNumbersAroundPosition = charMatrix.findAllNumbersAroundPosition(5, 8, 1);
     allNumbersAroundPosition.forEach(System.out::println);
+  }
+
+  @Test
+  void getNumberAtPosition() {
+    final var numberOptional = charMatrix.getNumberAtPosition(3, 6);
+    System.out.println(numberOptional);
   }
 }

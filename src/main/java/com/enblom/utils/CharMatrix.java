@@ -11,12 +11,14 @@ import java.util.stream.IntStream;
 
 public class CharMatrix {
   private final List<List<Character>> matrix;
+  private final List<Number> allNumbers;
 
   private CharMatrix(List<List<Character>> matrix, boolean relaxed) {
     this.matrix = matrix;
     if (!relaxed) {
       assertValid();
     }
+    this.allNumbers = this.parseOutAllNumbers();
   }
 
   public static CharMatrix fromInput(String input) {
@@ -118,7 +120,81 @@ public class CharMatrix {
     return positions;
   }
 
-  public List<Number> findAllNumbers() {
+  public List<Number> getAllNumbers() {
+    return allNumbers;
+  }
+
+  public List<Number> findAllNumbersWithinSquare(Position position, int size) {
+    return findAllNumbersWithinClip(position, size, size);
+  }
+
+  public List<Number> findAllNumbersWithinClip(int x, int y, int width, int height) {
+    return findAllNumbersWithinClip(new Position(x, y), width, height);
+  }
+
+  public List<Number> findAllNumbersWithinClip(Position position, int width, int height) {
+    List<Number> matchedNumbers = new ArrayList<>();
+    var allNumbers = getAllNumbers();
+    IntStream.range(position.y, position.y + height)
+        .forEach(
+            y ->
+                matchedNumbers.addAll(
+                    allNumbers.stream()
+                        .filter(
+                            number ->
+                                number.position.y == y
+                                    && (number.rightmostX() >= position.x
+                                        && number.leftmostX() <= position.x + width - 1))
+                        .toList()));
+    return matchedNumbers;
+  }
+
+  public List<Number> findAllNumbersAroundPosition(int x, int y, int margin) {
+    return findAllNumbersAroundPosition(new Position(x, y), margin);
+  }
+
+  public List<Number> findAllNumbersAroundPosition(Position position, int margin) {
+    if (margin < 1) {
+      throw new IllegalArgumentException(
+          "Margin needs to be at least 1. (Perhaps getNumberAtPosition does what you want?)");
+    }
+    return findAllNumbersWithinSquare(
+        new Position(position.x - margin, position.y - margin), margin * 2 + 1);
+  }
+
+  public Optional<Number> getNumberAtPosition(int x, int y) {
+    return getNumberAtPosition(new Position(x, y));
+  }
+
+  public Optional<Number> getNumberAtPosition(Position position) {
+    return getAllNumbers().stream()
+        .filter(
+            number ->
+                number.position.y == position.y
+                    && (number.rightmostX() >= position.x && number.leftmostX() <= position.x))
+        .findFirst();
+  }
+
+  @Override
+  public String toString() {
+    var builder = new StringBuilder("CharMatrix{\n");
+    matrix.forEach(
+        line -> {
+          line.forEach(builder::append);
+          builder.append("\n");
+        });
+    builder.append("}");
+    return builder.toString();
+  }
+
+  private char toChar(String letter) {
+    if (letter.length() != 1) {
+      throw new IllegalArgumentException("Only strings of length 1 is supported");
+    }
+    return letter.charAt(0);
+  }
+
+  private List<Number> parseOutAllNumbers() {
     List<Number> candidates = new ArrayList<>();
     int y = 0;
     for (var row : getRows()) {
@@ -149,67 +225,6 @@ public class CharMatrix {
     return candidates;
   }
 
-  public List<Number> findAllNumbersWithinSquare(Position position, int size) {
-    return findAllNumbersWithinClip(position, size, size);
-  }
-
-  public List<Number> findAllNumbersWithinClip(int x, int y, int width, int height) {
-    return findAllNumbersWithinClip(new Position(x, y), width, height);
-  }
-
-  public List<Number> findAllNumbersWithinClip(Position position, int width, int height) {
-    List<Number> matchedNumbers = new ArrayList<>();
-    var allNumbers = findAllNumbers();
-    IntStream.range(position.y, position.y + height)
-        .forEach(
-            y ->
-                matchedNumbers.addAll(
-                    allNumbers.stream()
-                        .filter(
-                            number ->
-                                number.position.y == y
-                                    && (number.rightmostX() >= position.x
-                                        && number.leftmostX() <= position.x + width - 1))
-                        .toList()));
-    return matchedNumbers;
-  }
-
-  public List<Number> findAllNumbersAroundPosition(int x, int y, int margin) {
-    return findAllNumbersAroundPosition(new Position(x, y), margin);
-  }
-
-  public List<Number> findAllNumbersAroundPosition(Position position, int margin) {
-    if (margin < 1) {
-      throw new IllegalArgumentException(
-          "Margin needs to be at least 1. (Perhaps getNumberAtPosition does what you want?)");
-    }
-    return findAllNumbersWithinSquare(
-        new Position(position.x - margin, position.y - margin), margin * 2 + 1);
-  }
-
-  public Optional<Number> getNumberAtPosition(Position position) {
-    return findAllNumbers().stream().filter(number -> number.position.equals(position)).findFirst();
-  }
-
-  @Override
-  public String toString() {
-    var builder = new StringBuilder("CharMatrix{\n");
-    matrix.forEach(
-        line -> {
-          line.forEach(builder::append);
-          builder.append("\n");
-        });
-    builder.append("}");
-    return builder.toString();
-  }
-
-  private char toChar(String letter) {
-    if (letter.length() != 1) {
-      throw new IllegalArgumentException("Only strings of length 1 is supported");
-    }
-    return letter.charAt(0);
-  }
-
   public record Position(int x, int y) {}
 
   public record Number(Position position, int length, int value) {
@@ -219,7 +234,7 @@ public class CharMatrix {
     }
 
     public int rightmostX() {
-      return position.x + length;
+      return position.x + length - 1;
     }
   }
 }

@@ -4,7 +4,6 @@ import com.enblom.utils.CharMatrix;
 import com.enblom.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Day3Solver extends Solver {
 
@@ -33,50 +32,15 @@ public class Day3Solver extends Solver {
 
   @Override
   public Integer solveSecondPuzzle() {
-    AtomicInteger sum = new AtomicInteger();
-    var matrix = CharMatrix.fromInput(input);
-    var candidates = getCandidates(matrix);
-    var multipliers = getMultipliers(matrix);
-
-    List<GearSet> gearSets = new ArrayList<>();
-
-    for (Multiplier multiplier : multipliers) {
-      List<Candidate> gearMembers = new ArrayList<>();
-      for (int i = -1; i < 2; i++) {
-        for (Candidate candidate : candidates) {
-          if (candidate.y == (multiplier.y + i)
-              && isHorizontallyAdjacent(
-                  candidate.x, candidate.x + candidate.length - 1, multiplier.x)) {
-            gearMembers.add(candidate);
-          }
-        }
-      }
-      if (gearMembers.size() == 2) {
-        final var gearSet = new GearSet(gearMembers.get(0), gearMembers.get(1));
-        gearSets.add(gearSet);
-      }
-    }
-
-    gearSets.forEach(gearSet -> sum.addAndGet(gearSet.getRatio()));
-
-    return sum.get();
-  }
-
-  private boolean isHorizontallyAdjacent(int leftX, int rightX, int comparedX) {
-    return comparedX >= leftX - 1 && comparedX <= rightX + 1;
-  }
-
-  private List<Multiplier> getMultipliers(CharMatrix matrix) {
-    List<Multiplier> multipliers = new ArrayList<>();
-    for (int y = 0; y < matrix.height(); y++) {
-      final var row = matrix.getRow(y);
-      for (int x = 0; x < row.size() - 1; x++) {
-        if (String.valueOf(row.get(x)).equals("*")) {
-          multipliers.add(new Multiplier(x, y));
-        }
-      }
-    }
-    return multipliers;
+    final var charMatrix = CharMatrix.fromInput(input);
+    final var asterixPositions = charMatrix.getPositionsFor("*");
+    return asterixPositions.stream()
+        .map(
+            position -> {
+              var numbers = charMatrix.findAllNumbersAroundPosition(position, 1);
+              return numbers.size() == 2 ? numbers.get(0).value() * numbers.get(1).value() : 0;
+            })
+        .reduce(0, Integer::sum);
   }
 
   private List<Candidate> getCandidates(CharMatrix matrix) {
@@ -108,7 +72,7 @@ public class Day3Solver extends Solver {
     }
     return candidates;
   }
-  
+
   private boolean isDiagonallyAdjacent(int x, int y, int length, CharMatrix matrix) {
     if (y > 0) {
       if (isHorizontallyAdjacent(x, y - 1, length, matrix)) {
@@ -157,12 +121,4 @@ public class Day3Solver extends Solver {
   }
 
   private record Candidate(int x, int y, int length, int value) {}
-
-  private record Multiplier(int x, int y) {}
-
-  private record GearSet(Candidate candidateOne, Candidate candidateTwo) {
-    private int getRatio() {
-      return candidateOne.value * candidateTwo.value;
-    }
-  }
 }
