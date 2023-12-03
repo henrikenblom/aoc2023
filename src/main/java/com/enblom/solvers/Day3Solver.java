@@ -18,8 +18,7 @@ public class Day3Solver extends Solver {
         .forEach(
             number -> {
               final var clip =
-                  charMatrix.clip(
-                      number.position().x() - 1, number.position().y() - 1, number.length() + 2, 3);
+                  charMatrix.clip(number.leftmostX() - 1, number.y() - 1, number.length() + 2, 3);
               if (clip.matches("^.*[^\\d.].*$")) {
                 sum.addAndGet(number.value());
               }

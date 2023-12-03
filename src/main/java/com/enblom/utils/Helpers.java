@@ -3,7 +3,7 @@ package com.enblom.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Utils {
+public class Helpers {
 
   public static String extractDigits(String input) {
     return input.replaceAll("\\D", "");

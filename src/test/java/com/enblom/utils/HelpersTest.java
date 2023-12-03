@@ -2,11 +2,11 @@ package com.enblom.utils;
 
 import org.junit.jupiter.api.Test;
 
-class UtilsTest {
+class HelpersTest {
 
   @Test
   void findAllIntegers() {
-    final var allIntegers = Utils.findAllIntegers("""
+    final var allIntegers = Helpers.findAllIntegers("""
         467..114..
         ...*......
         ..35..633.

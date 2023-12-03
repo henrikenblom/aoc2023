@@ -1,7 +1,7 @@
 package com.enblom;
 
 import com.enblom.solvers.Solver;
-import com.enblom.utils.Utils;
+import com.enblom.utils.Helpers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +20,7 @@ public class Main {
 
   public static void main(String[] args) {
     sprinkleTinsel();
-    findSolverClassNames().stream().map(Utils::grabIntegers).sorted().forEach(Main::runAndOutput);
+    findSolverClassNames().stream().map(Helpers::grabIntegers).sorted().forEach(Main::runAndOutput);
   }
 
   private static void runAndOutput(int day) {
@@ -73,7 +73,7 @@ public class Main {
   }
 
   private static String getInput(int day) throws IOException {
-    final var inputPath =
+    var inputPath =
         Paths.get(System.getProperty("user.dir"), "input", "day%s/input.txt".formatted(day));
     if (!Files.exists(inputPath)) {
       downloadInput(day, inputPath);
@@ -91,13 +91,13 @@ public class Main {
   }
 
   private static String getSessionCookie() {
-    final var sessionCookePath = Paths.get(System.getProperty("user.dir"), ".session_cookie");
+    var sessionCookiePath = Paths.get(System.getProperty("user.dir"), ".session_cookie");
     try {
-      return Files.readAllLines(sessionCookePath).get(0);
+      return Files.readAllLines(sessionCookiePath).get(0);
     } catch (Exception e) {
       throw new RuntimeException(
           "Could not read the session cookie. Save the AoC session cookie to %s, after logging in"
-              .formatted(sessionCookePath));
+              .formatted(sessionCookiePath));
     }
   }
 }
