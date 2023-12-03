@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Day2Solver extends Solver<Integer> {
+public class Day2Solver extends Solver {
 
   public Day2Solver(String input) {
     super(input);

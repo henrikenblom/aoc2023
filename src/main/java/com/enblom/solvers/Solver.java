@@ -1,13 +1,13 @@
 package com.enblom.solvers;
 
-public abstract class Solver<T> {
+public abstract class Solver {
   final String input;
 
   public Solver(String input) {
     this.input = input;
   }
 
-  public abstract T solveFirstPuzzle();
+  public abstract Integer solveFirstPuzzle();
 
-  public abstract T solveSecondPuzzle();
+  public abstract Integer solveSecondPuzzle();
 }

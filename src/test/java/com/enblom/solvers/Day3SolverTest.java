@@ -1,13 +1,10 @@
 package com.enblom.solvers;
 
-import static org.junit.jupiter.api.Assertions.*;
+class Day3SolverTest extends SolverTestBase<Day3Solver> {
 
-import org.junit.jupiter.api.Test;
-
-class Day3SolverTest {
-  @Test
-  void solveFirst() {
-    String testInput =
+  @Override
+  void solvesFirst() {
+    solvesFirst(
         """
         467..114..
         ...*......
@@ -19,15 +16,13 @@ class Day3SolverTest {
         ......755.
         ...$.*....
         .664.598..
-        """;
-    var classUnderTest = new Day3Solver(testInput);
-
-    assertEquals(4361, classUnderTest.solveFirstPuzzle());
+        """,
+        4361);
   }
 
-  @Test
-  void solveSecond() {
-    String testInput =
+  @Override
+  void solvesSecond() {
+    solvesSecond(
         """
         467..114..
         ...*......
@@ -39,9 +34,7 @@ class Day3SolverTest {
         ......755.
         ...$.*....
         .664.598..
-        """;
-    var classUnderTest = new Day3Solver(testInput);
-
-    assertEquals(467835, classUnderTest.solveSecondPuzzle());
+        """,
+        467835);
   }
 }

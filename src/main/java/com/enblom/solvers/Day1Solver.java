@@ -5,7 +5,7 @@ import static com.enblom.Utils.extractDigits;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class Day1Solver extends Solver<Integer> {
+public final class Day1Solver extends Solver {
 
   public Day1Solver(String input) {
     super(input);
