@@ -1,8 +1,9 @@
 package com.enblom;
 
-import static com.enblom.Utils.getResourceContent;
+import static com.enblom.utils.Utils.getResourceContent;
 
 import com.enblom.solvers.Solver;
+import com.enblom.utils.Utils;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,7 +28,7 @@ public class Main {
                   .getConstructor(String.class)
                   .newInstance(getResourceContent(resourceName));
 
-      output("********* Day " + String.format("%2d", day) + " *********");
+      output("********* Day " + "%2d".formatted(day) + " *********");
       output("  1st puzzle: " + solver.solveFirstPuzzle());
       output("  2nd puzzle: " + solver.solveSecondPuzzle());
       output("**************************");
@@ -43,9 +44,7 @@ public class Main {
   }
 
   private static void sprinkleTinsel() {
-    System.out.println();
-    System.out.println("               " + getTinsel());
-    System.out.println();
+    System.out.println("\n               " + getTinsel() + "\n");
   }
 
   private static String getTinsel() {

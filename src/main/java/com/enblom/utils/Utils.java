@@ -1,4 +1,4 @@
-package com.enblom;
+package com.enblom.utils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -20,7 +20,8 @@ public class Utils {
     return Integer.parseInt(extractDigits(input));
   }
 
-  public static String getResourceContent(String resourceName) throws URISyntaxException, IOException {
+  public static String getResourceContent(String resourceName)
+      throws URISyntaxException, IOException {
     return Files.readString(
         Paths.get(
             Objects.requireNonNull(Utils.class.getClassLoader().getResource(resourceName))

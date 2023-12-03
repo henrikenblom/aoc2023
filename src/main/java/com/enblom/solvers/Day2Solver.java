@@ -1,7 +1,7 @@
 package com.enblom.solvers;
 
-import static com.enblom.Utils.extractNonDigits;
-import static com.enblom.Utils.grabIntegers;
+import static com.enblom.utils.Utils.extractNonDigits;
+import static com.enblom.utils.Utils.grabIntegers;
 
 import java.util.Arrays;
 import java.util.HashMap;

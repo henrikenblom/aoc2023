@@ -1,6 +1,6 @@
 package com.enblom.solvers;
 
-import static com.enblom.Utils.extractDigits;
+import static com.enblom.utils.Utils.extractDigits;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;

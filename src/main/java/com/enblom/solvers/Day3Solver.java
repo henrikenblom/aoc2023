@@ -1,12 +1,10 @@
 package com.enblom.solvers;
 
-import com.enblom.Utils;
+import com.enblom.utils.CharMatrix;
+import com.enblom.utils.Utils;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class Day3Solver extends Solver {
 
@@ -17,7 +15,7 @@ public class Day3Solver extends Solver {
   @Override
   public Integer solveFirstPuzzle() {
     int sum = 0;
-    var matrix = getMatrix();
+    var matrix = CharMatrix.fromInput(input);
     var candidates = getCandidates(matrix);
 
     for (Candidate candidate : candidates) {
@@ -36,7 +34,7 @@ public class Day3Solver extends Solver {
   @Override
   public Integer solveSecondPuzzle() {
     AtomicInteger sum = new AtomicInteger();
-    var matrix = getMatrix();
+    var matrix = CharMatrix.fromInput(input);
     var candidates = getCandidates(matrix);
     var multipliers = getMultipliers(matrix);
 
@@ -68,10 +66,10 @@ public class Day3Solver extends Solver {
     return comparedX >= leftX - 1 && comparedX <= rightX + 1;
   }
 
-  private List<Multiplier> getMultipliers(Map<Integer, List<Character>> matrix) {
+  private List<Multiplier> getMultipliers(CharMatrix matrix) {
     List<Multiplier> multipliers = new ArrayList<>();
-    for (int y = 0; y < matrix.size(); y++) {
-      final var row = matrix.get(y);
+    for (int y = 0; y < matrix.height(); y++) {
+      final var row = matrix.getRow(y);
       for (int x = 0; x < row.size() - 1; x++) {
         if (String.valueOf(row.get(x)).equals("*")) {
           multipliers.add(new Multiplier(x, y));
@@ -81,14 +79,14 @@ public class Day3Solver extends Solver {
     return multipliers;
   }
 
-  private List<Candidate> getCandidates(Map<Integer, List<Character>> matrix) {
+  private List<Candidate> getCandidates(CharMatrix matrix) {
     List<Candidate> candidates = new ArrayList<>();
-    for (var row : matrix.keySet()) {
+    int y = 0;
+    for (var row : matrix.getRows()) {
       boolean isMatching = false;
       int length = 0;
-      final var characters = matrix.get(row);
-      for (int x = 0; x < characters.size(); x++) {
-        String letter = String.valueOf(characters.get(x));
+      for (int x = 0; x < row.size(); x++) {
+        String letter = String.valueOf(row.get(x));
         if (letter.matches("\\d")) {
           length++;
           isMatching = true;
@@ -97,53 +95,43 @@ public class Day3Solver extends Solver {
             int start = x - length;
             StringBuilder numberString = new StringBuilder();
             for (int v = start; v < start + length; v++) {
-              numberString.append(characters.get(v));
+              numberString.append(row.get(v));
             }
             candidates.add(
-                new Candidate(start, row, length, Utils.grabIntegers(numberString.toString())));
+                new Candidate(start, y, length, Utils.grabIntegers(numberString.toString())));
           }
           isMatching = false;
           length = 0;
         }
       }
+      y++;
     }
     return candidates;
   }
-
-  private Map<Integer, List<Character>> getMatrix() {
-    Map<Integer, List<Character>> matrix = new HashMap<>();
-    final var lines = input.split("\n");
-    for (int i = 0; i < lines.length; i++) {
-      matrix.put(i, (lines[i] + ".").chars().mapToObj(c -> (char) c).collect(Collectors.toList()));
-    }
-    return matrix;
-  }
-
-  private boolean isDiagonallyAdjacent(
-      int x, int y, int length, Map<Integer, List<Character>> matrix) {
+  
+  private boolean isDiagonallyAdjacent(int x, int y, int length, CharMatrix matrix) {
     if (y > 0) {
       if (isHorizontallyAdjacent(x, y - 1, length, matrix)) {
         return true;
       }
     }
-    if (y < matrix.size() - 1) {
+    if (y < matrix.height() - 1) {
       return isHorizontallyAdjacent(x, y + 1, length, matrix);
     }
     return false;
   }
 
-  private boolean isVerticallyAdjacent(
-      int x, int y, int length, Map<Integer, List<Character>> matrix) {
+  private boolean isVerticallyAdjacent(int x, int y, int length, CharMatrix matrix) {
     if (y > 0) {
-      List<Character> rowOver = matrix.get(y - 1);
+      List<Character> rowOver = matrix.getRow(y - 1);
       for (int i = x; i <= x + length; i++) {
         if (!String.valueOf(rowOver.get(i)).equals(".")) {
           return true;
         }
       }
     }
-    if (y < matrix.size() - 1) {
-      List<Character> rowBelow = matrix.get(y + 1);
+    if (y < matrix.height() - 1) {
+      List<Character> rowBelow = matrix.getRow(y + 1);
       for (int i = x; i < x + length; i++) {
         final var s = String.valueOf(rowBelow.get(i));
         if (!s.equals(".")) {
@@ -154,9 +142,8 @@ public class Day3Solver extends Solver {
     return false;
   }
 
-  private boolean isHorizontallyAdjacent(
-      int x, int y, int length, Map<Integer, List<Character>> matrix) {
-    List<Character> row = matrix.get(y);
+  private boolean isHorizontallyAdjacent(int x, int y, int length, CharMatrix matrix) {
+    List<Character> row = matrix.getRow(y);
     int right = x + length;
     if (right < row.size()) {
       if (!String.valueOf(row.get(right)).equals(".")) {
