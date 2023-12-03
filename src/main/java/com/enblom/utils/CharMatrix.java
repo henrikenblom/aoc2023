@@ -104,6 +104,10 @@ public class CharMatrix {
     return rows.stream().anyMatch(row -> row.matches(regex));
   }
 
+  public boolean contains(String letter) {
+    return contains(toChar(letter));
+  }
+
   public boolean contains(char c) {
     return matrix.stream().anyMatch(list -> list.contains(c));
   }
