@@ -1,6 +1,6 @@
 package com.enblom;
 
-import static com.enblom.utils.Utils.getResourceContent;
+import static com.enblom.utils.Utils.getInput;
 
 import com.enblom.solvers.Solver;
 import com.enblom.utils.Utils;
@@ -21,12 +21,8 @@ public class Main {
   private static void runAndOutput(int day) {
     try {
       var className = "com.enblom.solvers.Day%sSolver".formatted(day);
-      var resourceName = "day%s/input.txt".formatted(day);
       var solver =
-          (Solver)
-              Class.forName(className)
-                  .getConstructor(String.class)
-                  .newInstance(getResourceContent(resourceName));
+          (Solver) Class.forName(className).getConstructor(String.class).newInstance(getInput(day));
 
       output("********* Day " + "%2d".formatted(day) + " *********");
       output("  1st puzzle: " + solver.solveFirstPuzzle());
