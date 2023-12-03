@@ -10,15 +10,30 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CharMatrix {
+  private final List<String> rows;
   private final List<List<Character>> matrix;
   private final List<Number> allNumbers;
 
-  private CharMatrix(List<List<Character>> matrix, boolean relaxed) {
-    this.matrix = matrix;
+  private CharMatrix(String input, boolean relaxed) {
+    this.rows = input.lines().toList();
+    this.matrix =
+        input
+            .lines()
+            .map(line -> line.chars().mapToObj(c -> (char) c).collect(Collectors.toList()))
+            .toList();
     if (!relaxed) {
       assertValid();
     }
-    this.allNumbers = this.parseOutAllNumbers();
+    this.allNumbers = parseOutAllNumbers();
+  }
+
+  private CharMatrix(List<List<Character>> matrix) {
+    this.matrix = matrix;
+    this.allNumbers = parseOutAllNumbers();
+    this.rows =
+        matrix.stream()
+            .map(row -> row.stream().map(String::valueOf).collect(Collectors.joining()))
+            .toList();
   }
 
   public static CharMatrix fromInput(String input) {
@@ -26,12 +41,7 @@ public class CharMatrix {
   }
 
   public static CharMatrix fromInput(String input, boolean relaxed) {
-    return new CharMatrix(
-        input
-            .lines()
-            .map(line -> line.chars().mapToObj(c -> (char) c).collect(Collectors.toList()))
-            .toList(),
-        relaxed);
+    return new CharMatrix(input, relaxed);
   }
 
   private void assertValid() {
@@ -84,15 +94,14 @@ public class CharMatrix {
   public CharMatrix clip(Position position, int width, int height) {
     int startX = max(0, position.x());
     int startY = max(0, position.y());
-    int endX = min(matrix.get(0).size() - 1, startX + width);
-    int endY = min(matrix.size() - 1, startY + height);
+    int endX = min(matrix.get(0).size() - 1, position.x + width);
+    int endY = min(matrix.size() - 1, position.y + height);
     return new CharMatrix(
-        matrix.subList(startY, endY).stream().map(list -> list.subList(startX, endX)).toList(),
-        false);
+        matrix.subList(startY, endY).stream().map(list -> list.subList(startX, endX)).toList());
   }
 
-  public boolean contains(String letter) {
-    return contains(toChar(letter));
+  public boolean matches(String regex) {
+    return rows.stream().anyMatch(row -> row.matches(regex));
   }
 
   public boolean contains(char c) {

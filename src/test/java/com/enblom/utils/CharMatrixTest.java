@@ -65,7 +65,7 @@ CharMatrix{
 
   @Test
   void contains() {
-    assertTrue(charMatrix.contains("*"));
+    assertTrue(charMatrix.matches("*"));
   }
 
   @Test
