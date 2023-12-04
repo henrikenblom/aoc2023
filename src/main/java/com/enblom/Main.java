@@ -20,7 +20,7 @@ public class Main {
 
   public static void main(String[] args) {
     sprinkleTinsel();
-    findSolverClassNames().stream().map(Helpers::grabIntegers).sorted().forEach(Main::runAndOutput);
+    findSolverClassNames().stream().map(Helpers::grabInteger).sorted().forEach(Main::runAndOutput);
   }
 
   private static void runAndOutput(int day) {

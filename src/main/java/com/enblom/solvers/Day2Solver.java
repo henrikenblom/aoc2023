@@ -1,7 +1,7 @@
 package com.enblom.solvers;
 
 import static com.enblom.utils.Helpers.extractNonDigits;
-import static com.enblom.utils.Helpers.grabIntegers;
+import static com.enblom.utils.Helpers.grabInteger;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -41,7 +41,7 @@ public class Day2Solver extends Solver {
                                 .forEach(
                                     entry ->
                                         colorCountMap.put(
-                                            extractNonDigits(entry), grabIntegers(entry)));
+                                            extractNonDigits(entry), grabInteger(entry)));
                             return new GameSet(
                                 colorCountMap.get("red"),
                                 colorCountMap.get("green"),
@@ -57,7 +57,7 @@ public class Day2Solver extends Solver {
 
   private record Game(String name, List<GameSet> sets) {
     int getId() {
-      return grabIntegers(name);
+      return grabInteger(name);
     }
 
     boolean isPossible() {

@@ -1,6 +1,6 @@
 package com.enblom.utils;
 
-import static com.enblom.utils.Helpers.grabIntegers;
+import static com.enblom.utils.Helpers.grabInteger;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -222,7 +222,7 @@ public class CharMatrix {
               numberString.append(row.get(v));
             }
             candidates.add(
-                new Number(new Position(start, y), length, grabIntegers(numberString.toString())));
+                new Number(new Position(start, y), length, grabInteger(numberString.toString())));
           }
           isMatching = false;
           length = 0;

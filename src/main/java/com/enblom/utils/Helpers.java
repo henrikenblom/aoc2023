@@ -13,7 +13,7 @@ public class Helpers {
     return input.replaceAll("\\d", "");
   }
 
-  public static int grabIntegers(String input) {
+  public static int grabInteger(String input) {
     return Integer.parseInt(extractDigits(input));
   }
 
@@ -21,7 +21,7 @@ public class Helpers {
     List<Integer> integers = new ArrayList<>();
     boolean isMatching = false;
     int length = 0;
-    var characters = input.chars().mapToObj(c -> (char) c).toList();
+    var characters = (input + " ").chars().mapToObj(c -> (char) c).toList();
     for (int x = 0; x < characters.size(); x++) {
       String letter = String.valueOf(characters.get(x));
       if (letter.matches("\\d")) {
@@ -34,7 +34,7 @@ public class Helpers {
           for (int v = start; v < start + length; v++) {
             numberString.append(characters.get(v));
           }
-          integers.add(grabIntegers(numberString.toString()));
+          integers.add(grabInteger(numberString.toString()));
         }
         isMatching = false;
         length = 0;
