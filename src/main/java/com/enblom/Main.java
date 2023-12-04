@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Comparator;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,8 +20,12 @@ import java.util.stream.Collectors;
 public class Main {
 
   public static void main(String[] args) {
-    sprinkleTinsel();
-    findSolverClassNames().stream().map(Helpers::grabInteger).sorted().forEach(Main::runAndOutput);
+    var optionalDay =
+        findSolverClassNames().stream().map(Helpers::grabInteger).max(Comparator.naturalOrder());
+    if (optionalDay.isPresent()) {
+      sprinkleTinsel();
+      runAndOutput(optionalDay.get());
+    }
   }
 
   private static void runAndOutput(int day) {
