@@ -12,13 +12,13 @@ public final class Day1Solver extends Solver {
   }
 
   @Override
-  public Integer solveFirstPuzzle() {
-    return decipher(input);
+  public Long solveFirstPuzzle() {
+    return (long) decipher(input);
   }
 
   @Override
-  public Integer solveSecondPuzzle() {
-    return decipher(resolveSpelledOutDigits(input));
+  public Long solveSecondPuzzle() {
+    return (long) decipher(resolveSpelledOutDigits(input));
   }
 
   private int decipher(String text) {

@@ -7,7 +7,7 @@ public abstract class Solver {
     this.input = input;
   }
 
-  public abstract Integer solveFirstPuzzle();
+  public abstract Long solveFirstPuzzle();
 
-  public abstract Integer solveSecondPuzzle();
+  public abstract Long solveSecondPuzzle();
 }

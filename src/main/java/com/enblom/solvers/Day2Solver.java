@@ -16,13 +16,14 @@ public class Day2Solver extends Solver {
   }
 
   @Override
-  public Integer solveFirstPuzzle() {
-    return parseToGameList(input).stream().filter(Game::isPossible).mapToInt(Game::getId).sum();
+  public Long solveFirstPuzzle() {
+    return (long)
+        parseToGameList(input).stream().filter(Game::isPossible).mapToInt(Game::getId).sum();
   }
 
   @Override
-  public Integer solveSecondPuzzle() {
-    return parseToGameList(input).stream().mapToInt(Game::getPowerOfMinimumSet).sum();
+  public Long solveSecondPuzzle() {
+    return (long) parseToGameList(input).stream().mapToInt(Game::getPowerOfMinimumSet).sum();
   }
 
   private List<Game> parseToGameList(String input) {

@@ -64,8 +64,8 @@ CharMatrix{
   }
 
   @Test
-  void contains() {
-    assertTrue(charMatrix.matches("*"));
+  void matches() {
+    assertTrue(charMatrix.anyRowMatches("^\\.\\.\\.\\*\\.\\.\\.\\.\\.\\.$"));
   }
 
   @Test

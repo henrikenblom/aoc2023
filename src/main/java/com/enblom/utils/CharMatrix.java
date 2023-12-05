@@ -101,7 +101,7 @@ public class CharMatrix {
         matrix.subList(startY, endY).stream().map(list -> list.subList(startX, endX)).toList());
   }
 
-  public boolean matches(String regex) {
+  public boolean anyRowMatches(String regex) {
     return rows.stream().anyMatch(row -> row.matches(regex));
   }
 

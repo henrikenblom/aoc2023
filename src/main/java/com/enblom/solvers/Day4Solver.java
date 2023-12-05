@@ -18,7 +18,7 @@ public class Day4Solver extends Solver {
   }
 
   @Override
-  public Integer solveFirstPuzzle() {
+  public Long solveFirstPuzzle() {
     int sum = 0;
     for (String line : input.lines().toList()) {
       int cardSum = 0;
@@ -39,11 +39,11 @@ public class Day4Solver extends Solver {
       }
       sum += cardSum;
     }
-    return sum;
+    return (long) sum;
   }
 
   @Override
-  public Integer solveSecondPuzzle() {
+  public Long solveSecondPuzzle() {
     populateCards();
     var optionalCardGroup = getNextCardGroup();
     while (optionalCardGroup.isPresent()) {
@@ -56,7 +56,7 @@ public class Day4Solver extends Solver {
           });
       optionalCardGroup = getNextCardGroup();
     }
-    return cardGroups.values().stream().map(List::size).reduce(0, Integer::sum);
+    return Long.valueOf(cardGroups.values().stream().map(List::size).reduce(0, Integer::sum));
   }
 
   private void addCopy(int cardNumber) {

@@ -24,11 +24,11 @@ abstract class SolverTestBase<T extends Solver> {
     this.solvesSecond();
   }
 
-  void solvesFirst(String input, int expected) {
+  void solvesFirst(String input, long expected) {
     assertEquals(expected, getSolver(input).solveFirstPuzzle());
   }
 
-  void solvesSecond(String input, int expected) {
+  void solvesSecond(String input, long expected) {
     assertEquals(expected, getSolver(input).solveSecondPuzzle());
   }
 

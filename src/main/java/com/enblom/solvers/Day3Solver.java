@@ -10,7 +10,7 @@ public class Day3Solver extends Solver {
   }
 
   @Override
-  public Integer solveFirstPuzzle() {
+  public Long solveFirstPuzzle() {
     final var charMatrix = CharMatrix.fromInput(input);
     AtomicInteger sum = new AtomicInteger();
     charMatrix
@@ -19,23 +19,24 @@ public class Day3Solver extends Solver {
             number -> {
               final var clip =
                   charMatrix.clip(number.leftmostX() - 1, number.y() - 1, number.length() + 2, 3);
-              if (clip.matches("^.*[^\\d.].*$")) {
+              if (clip.anyRowMatches("^.*[^\\d.].*$")) {
                 sum.addAndGet(number.value());
               }
             });
-    return sum.get();
+    return (long) sum.get();
   }
 
   @Override
-  public Integer solveSecondPuzzle() {
+  public Long solveSecondPuzzle() {
     final var charMatrix = CharMatrix.fromInput(input);
     final var asterixPositions = charMatrix.getPositionsFor("*");
-    return asterixPositions.stream()
-        .map(
-            position -> {
-              var numbers = charMatrix.findAllNumbersAroundPosition(position, 1);
-              return numbers.size() == 2 ? numbers.get(0).value() * numbers.get(1).value() : 0;
-            })
-        .reduce(0, Integer::sum);
+    return Long.valueOf(
+        asterixPositions.stream()
+            .map(
+                position -> {
+                  var numbers = charMatrix.findAllNumbersAroundPosition(position, 1);
+                  return numbers.size() == 2 ? numbers.get(0).value() * numbers.get(1).value() : 0;
+                })
+            .reduce(0, Integer::sum));
   }
 }
