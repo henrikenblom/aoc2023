@@ -5,12 +5,16 @@ class Day6SolverTest extends SolverTestBase<Day6Solver> {
   @Override
   void solvesFirst() {
     solvesFirst("""
-        """, 0);
+        Time:      7  15   30
+        Distance:  9  40  200
+        """, 288);
   }
 
   @Override
   void solvesSecond() {
     solvesSecond("""
-        """, 0);
+        Time:      71530
+        Distance:  940200
+        """, 71503);
   }
 }
