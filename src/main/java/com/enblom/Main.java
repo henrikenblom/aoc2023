@@ -15,6 +15,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -34,10 +35,10 @@ public class Main {
       var solver =
           (Solver) Class.forName(className).getConstructor(String.class).newInstance(getInput(day));
 
-      output("********* Day " + "%2d".formatted(day) + " *********");
-      output("  1st puzzle: " + solver.solveFirstPuzzle());
-      output("  2nd puzzle: " + solver.solveSecondPuzzle());
-      output("**************************");
+      output("**************** Day " + "%2d".formatted(day) + " ****************");
+      output("  1st puzzle: " + time(solver::solveFirstPuzzle));
+      output("  2nd puzzle: " + time(solver::solveSecondPuzzle));
+      output("****************************************");
       sprinkleTinsel();
 
     } catch (Exception ex) {
@@ -45,12 +46,17 @@ public class Main {
     }
   }
 
+  private static String time(Supplier<Long> supplier) {
+    final var start = System.currentTimeMillis();
+    return "%s - Took: %sms".formatted(supplier.get(), System.currentTimeMillis() - start);
+  }
+
   private static void output(String text) {
     System.out.println("   " + text);
   }
 
   private static void sprinkleTinsel() {
-    System.out.println("\n               " + getTinsel() + "\n");
+    System.out.println("\n                      " + getTinsel() + "\n");
   }
 
   private static String getTinsel() {
